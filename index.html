@@ -3,251 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discord Redesign – Mobile</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>BetterDiscord – TRIPLE A</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #1a1a1a;
-    --border: rgba(255,255,255,0.06);
-    --accent: #e02020;
-    --accent2: #ff4444;
-    --green: #57f287;
-    --text: #f0f0f0;
-    --muted: #666666;
-    --pill: #1f1f1f;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body {
-    background: #050505;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-  }
-  .phone {
-    width: 375px;
-    height: 812px;
-    background: var(--bg);
-    border-radius: 44px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 40px 100px rgba(0,0,0,0.9), 0 0 80px rgba(220,30,30,0.2);
-    display: flex;
-    flex-direction: column;
-  }
-  .status-bar {
-    height: 44px;
-    padding: 14px 24px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  .status-bar .time { font-size: 15px; font-weight: 600; }
-  .status-icons { display: flex; gap: 6px; align-items: center; font-size: 13px; }
-
-  .screen { display: none; flex-direction: column; flex: 1; overflow: hidden; }
-  .screen.active { display: flex; }
-
-  /* HOME */
-  .home-header { padding: 16px 20px 12px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-  .home-header h1 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; }
-  .header-actions { display: flex; gap: 10px; }
-  .icon-btn { width: 36px; height: 36px; background: var(--surface); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border); font-size: 16px; transition: background 0.2s; }
-  .icon-btn:hover { background: var(--surface2); }
-
-  .search-bar { margin: 0 20px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; transition: border-color 0.2s; flex-shrink: 0; }
-  .search-bar:hover { border-color: var(--accent); }
-  .search-bar span { font-size: 14px; color: var(--muted); }
-
-  .feed { flex: 1; overflow-y: auto; padding: 0 20px 16px; }
-  .feed::-webkit-scrollbar { display: none; }
-  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; margin-top: 4px; }
-
-  .stories { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
-  .stories::-webkit-scrollbar { display: none; }
-  .story { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
-  .story-ring { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #e02020, #ff6060); padding: 2px; position: relative; }
-  .story-ring.seen { background: var(--surface2); }
-  .story-avatar { width: 100%; height: 100%; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 20px; border: 2px solid var(--bg); }
-  .story-dot { position: absolute; bottom: 2px; right: 2px; width: 12px; height: 12px; background: var(--green); border-radius: 50%; border: 2px solid var(--bg); }
-  .story span { font-size: 10px; color: var(--muted); max-width: 52px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  .feed-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 10px; cursor: pointer; transition: border-color 0.2s, transform 0.1s; animation: fadeUp 0.3s ease both; }
-  .feed-card:hover { border-color: rgba(88,101,242,0.4); transform: translateY(-1px); }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .server-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .card-meta { flex: 1; min-width: 0; }
-  .card-meta .server-name { font-size: 11px; color: var(--muted); margin-bottom: 1px; }
-  .card-meta .channel-name { font-size: 13px; font-weight: 500; }
-  .unread-badge { background: var(--accent); color: white; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; flex-shrink: 0; }
-  .card-preview { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
-  .card-preview strong { color: var(--text); font-weight: 500; }
-  .card-footer { display: flex; align-items: center; justify-content: space-between; }
-  .avatar-stack { display: flex; }
-  .av { width: 20px; height: 20px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--surface); margin-left: -6px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
-  .av:first-child { margin-left: 0; }
-  .card-time { font-size: 11px; color: var(--muted); }
-
-  .summary-card { background: linear-gradient(135deg, rgba(220,30,30,0.15), rgba(255,60,60,0.08)); border: 1px solid rgba(220,30,30,0.3); border-radius: 16px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
-  .summary-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .ai-badge { background: linear-gradient(90deg, #c01010, #ff4444); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 20px; color: white; }
-  .summary-header span { font-size: 12px; color: var(--muted); }
-  .summary-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-  .summary-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
-  .summary-text em { color: var(--text); font-style: normal; }
-
-  .credits-card { background: var(--surface); border: 1px solid rgba(220,30,30,0.3); border-radius: 16px; padding: 16px; margin-bottom: 10px; text-align: center; }
-  .credits-team { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; background: linear-gradient(90deg, #e02020, #ff6060); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin-bottom: 4px; }
-  .credits-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
-  .credits-members { display: flex; justify-content: center; gap: 16px; }
-  .credit-member { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .credit-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #e02020, #ff6060); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; color: white; }
-  .credit-name { font-size: 11px; color: var(--muted); }
-
-  /* SEARCH */
-  .search-screen-wrap { display: flex; flex-direction: column; flex: 1; overflow: hidden; padding: 16px 20px 0; }
-  .search-screen-wrap h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 16px; flex-shrink: 0; }
-  .search-input-wrap { background: var(--surface); border: 1px solid var(--accent); border-radius: 14px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; margin-bottom: 12px; flex-shrink: 0; }
-  .search-input-wrap input { background: none; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; flex: 1; }
-  .search-input-wrap input::placeholder { color: var(--muted); }
-  .clear-btn { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 0 2px; }
-  .clear-btn:hover { color: var(--text); }
-
-  .filter-row { display: flex; gap: 8px; margin-bottom: 14px; flex-shrink: 0; overflow-x: auto; padding-bottom: 4px; }
-  .filter-row::-webkit-scrollbar { display: none; }
-  .filter-chip { background: var(--pill); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 12px; color: var(--muted); cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
-  .filter-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
-
-  .search-results { flex: 1; overflow-y: auto; padding-bottom: 16px; }
-  .search-results::-webkit-scrollbar { display: none; }
-
-  .no-results { text-align: center; padding: 40px 20px; color: var(--muted); }
-  .no-results .nr-icon { font-size: 40px; margin-bottom: 12px; }
-  .no-results p { font-size: 14px; }
-
-  .search-result { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: padding-left 0.15s; }
-  .search-result:hover { padding-left: 4px; }
-  .result-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .result-body { flex: 1; min-width: 0; }
-  .result-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
-  .result-name { font-size: 13px; font-weight: 600; }
-  .result-where { font-size: 11px; color: var(--muted); }
-  .result-text { font-size: 13px; color: var(--muted); line-height: 1.4; }
-  .result-text mark { background: rgba(220,30,30,0.35); color: var(--text); border-radius: 3px; padding: 0 2px; }
-  .result-time { font-size: 11px; color: var(--muted); flex-shrink: 0; }
-
-  .results-count { font-size: 11px; color: var(--muted); margin-bottom: 10px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }
-
-  /* SERVERS */
-  .servers-screen { padding: 16px 20px; overflow-y: auto; flex: 1; }
-  .servers-screen::-webkit-scrollbar { display: none; }
-  .servers-screen h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-  .servers-count { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
-  .server-folder { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 10px; overflow: hidden; }
-  .folder-header { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; }
-  .folder-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .folder-name { font-size: 14px; font-weight: 600; flex: 1; }
-  .folder-count { font-size: 12px; color: var(--muted); }
-  .folder-arrow { font-size: 12px; color: var(--muted); transition: transform 0.2s; }
-  .folder-arrow.open { transform: rotate(90deg); }
-  .folder-servers { padding: 0 14px 12px; display: flex; gap: 10px; flex-wrap: wrap; }
-  .server-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
-  .s-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; position: relative; }
-  .s-icon .notif { position: absolute; top: -3px; right: -3px; width: 14px; height: 14px; background: #ed4245; border-radius: 50%; border: 2px solid var(--surface); font-size: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
-  .s-name { font-size: 10px; color: var(--muted); text-align: center; max-width: 52px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  /* DM */
-  .dm-screen { padding: 16px 20px; overflow-y: auto; flex: 1; }
-  .dm-screen::-webkit-scrollbar { display: none; }
-  .dm-screen h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 16px; }
-  .dm-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: padding-left 0.15s; }
-  .dm-item:hover { padding-left: 4px; }
-  .dm-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 20px; position: relative; flex-shrink: 0; }
-  .dm-status { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--bg); }
-  .dm-status.online { background: var(--green); }
-  .dm-status.idle { background: #faa61a; }
-  .dm-status.offline { background: var(--muted); }
-  .dm-info { flex: 1; min-width: 0; }
-  .dm-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-  .dm-preview { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .dm-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
-  .dm-time { font-size: 11px; color: var(--muted); }
-  .dm-unread { background: var(--accent); color: white; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 20px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
-
-  /* BOTTOM NAV */
-  .bottom-nav { height: 72px; background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; padding: 0 10px 8px; flex-shrink: 0; }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 6px 12px; border-radius: 12px; transition: background 0.2s; position: relative; }
-  .nav-item:hover { background: var(--surface2); }
-  .nav-item.active .nav-label { color: var(--accent); }
-  .nav-icon { font-size: 22px; line-height: 1; }
-  .nav-label { font-size: 10px; color: var(--muted); font-weight: 500; }
-  .nav-item.active .nav-icon { filter: none; }
-  .nav-badge { position: absolute; top: 4px; right: 8px; width: 8px; height: 8px; background: #ed4245; border-radius: 50%; border: 2px solid var(--surface); }
+:root{--bg:#0a0a0a;--s:#111;--s2:#1a1a1a;--b:rgba(255,255,255,0.06);--r:#e02020;--g:#57f287;--t:#f0f0f0;--m:#666;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#050505;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:'DM Sans',sans-serif;color:var(--t);}
+.phone{width:375px;height:812px;background:var(--bg);border-radius:44px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 40px 100px rgba(0,0,0,0.9),0 0 80px rgba(220,30,30,0.2);}
+.bar{height:44px;padding:14px 24px 0;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;font-size:15px;font-weight:600;}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
+.screen.active{display:flex;}
+h1{font-family:'Syne',sans-serif;font-size:24px;padding:14px 20px 10px;flex-shrink:0;}
+.nav{height:72px;background:var(--s);border-top:1px solid var(--b);display:flex;align-items:center;justify-content:space-around;padding:0 10px 8px;flex-shrink:0;}
+.ni{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:6px 16px;border-radius:12px;}
+.ni.active .nl{color:var(--r);}
+.ni .ic{font-size:22px;}
+.nl{font-size:10px;color:var(--m);}
+/* HOME */
+.feed{flex:1;overflow-y:auto;padding:0 20px 16px;}
+.feed::-webkit-scrollbar{display:none;}
+.card{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color 0.2s;}
+.card:hover{border-color:rgba(220,30,30,0.4);}
+.row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ico{width:34px;height:34px;border-radius:10px;background:rgba(220,32,32,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.ch{font-size:13px;font-weight:500;flex:1;}
+.badge{background:var(--r);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.txt{font-size:13px;color:var(--m);line-height:1.5;}
+.txt b{color:var(--t);}
+.creds{background:var(--s);border:1px solid rgba(220,30,30,0.3);border-radius:16px;padding:16px;text-align:center;margin-bottom:10px;}
+.ctn{font-family:'Syne',sans-serif;font-size:22px;background:linear-gradient(90deg,#e02020,#ff6060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
+.cmb{display:flex;justify-content:center;gap:16px;margin-top:10px;}
+.cm{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.cav{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e02020,#ff6060);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff;}
+.cm span{font-size:11px;color:var(--m);}
+/* SEARCH */
+.si{margin:0 20px 12px;background:var(--s);border:1px solid var(--r);border-radius:14px;display:flex;align-items:center;gap:8px;padding:10px 14px;flex-shrink:0;}
+.si input{background:none;border:none;outline:none;color:var(--t);font-family:'DM Sans',sans-serif;font-size:15px;flex:1;}
+.si input::placeholder{color:var(--m);}
+.res{flex:1;overflow-y:auto;padding:0 20px;}
+.res::-webkit-scrollbar{display:none;}
+.ri{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--b);cursor:pointer;}
+.rav{width:36px;height:36px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.rn{font-size:13px;font-weight:600;}
+.rw{font-size:11px;color:var(--m);}
+.rt{font-size:13px;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ri mark{background:rgba(220,30,30,0.3);color:var(--t);border-radius:3px;padding:0 2px;}
+.empty{text-align:center;padding:40px 20px;color:var(--m);font-size:14px;}
+/* DM */
+.dml{flex:1;overflow-y:auto;padding:0 20px;}
+.dml::-webkit-scrollbar{display:none;}
+.di{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--b);cursor:pointer;transition:padding-left 0.15s;}
+.di:hover{padding-left:4px;}
+.dav{width:44px;height:44px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:20px;position:relative;flex-shrink:0;}
+.dot{position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg);}
+.online{background:var(--g);}.idle{background:#faa61a;}.offline{background:var(--m);}
+.dn{font-size:14px;font-weight:600;}
+.dp{font-size:12px;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* CHAT */
+.chdr{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--s);border-bottom:1px solid var(--b);flex-shrink:0;}
+.back{font-size:28px;color:var(--r);cursor:pointer;}
+.chav{width:38px;height:38px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;}
+.msgs::-webkit-scrollbar{display:none;}
+.msg{max-width:75%;display:flex;flex-direction:column;}
+.msg.me{align-self:flex-end;align-items:flex-end;}
+.msg.them{align-self:flex-start;}
+.bbl{padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.4;}
+.me .bbl{background:var(--r);color:#fff;border-bottom-right-radius:4px;}
+.them .bbl{background:var(--s2);border-bottom-left-radius:4px;}
+.mt{font-size:10px;color:var(--m);margin-top:3px;}
+.cinp{display:flex;gap:8px;padding:10px 14px;background:var(--s);border-top:1px solid var(--b);flex-shrink:0;}
+.cinp input{flex:1;background:var(--s2);border:1px solid var(--b);border-radius:22px;padding:10px 16px;color:var(--t);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;}
+.cinp input:focus{border-color:var(--r);}
+.cinp input::placeholder{color:var(--m);}
+.snd{width:38px;height:38px;background:var(--r);border:none;border-radius:50%;color:#fff;font-size:16px;cursor:pointer;flex-shrink:0;}
 </style>
 </head>
 <body>
 <div class="phone">
-  <div class="status-bar">
-    <span class="time" id="clock">6:07</span>
-    <div class="status-icons">📶 🔋</div>
+  <div class="bar"><span id="clk">9:41</span><span>📶🔋</span></div>
+
+  <div class="screen active" id="screen-home">
+    <h1>For You ✨</h1>
+    <div class="feed">
+      <div class="card" style="background:linear-gradient(135deg,rgba(220,30,30,0.15),rgba(255,60,60,0.05));border-color:rgba(220,30,30,0.3)"><div class="row"><span style="font-size:10px;font-weight:700;background:linear-gradient(90deg,#e02020,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px">✦ AI SUMMARY</span><span style="font-size:11px;color:var(--m);margin-left:4px">gaming-squad · 2h ago</span></div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:6px">Big debate in #builds 🔥</div><div class="txt"><b>blurrr</b> dropped a new PC build list, <b>pengiun</b> said the GPU is mid and overpriced. 47 replies — mostly glazing pengiun. Active poll: <b>4070 vs 4080?</b></div></div>
+      <div class="card"><div class="row"><div class="ico">🎮</div><span class="ch">#general-chat</span><span class="badge">12</span></div><div class="txt"><b>blurrr:</b> bro the new season just dropped and its actually unhinged, map is cooked in the best way fr</div></div>
+      <div class="card"><div class="row"><div class="ico">🐧</div><span class="ch">#share-your-work</span><span class="badge">5</span></div><div class="txt"><b>pengiun:</b> finally finished the piece no cap took forever but its giving exactly what it was supposed to give 🥺</div></div>
+      <div class="card"><div class="row"><div class="ico">💻</div><span class="ch">#announcements</span></div><div class="txt"><b>magicnuts:</b> bot update just dropped, slash commands are 3x faster, its actually goated</div></div>
+      <div class="card"><div class="row"><div class="ico">🎤</div><span class="ch">#builds</span></div><div class="txt"><b>drake:</b> parts list for the drone build just came in, motors finally in stock, we are so back</div></div>
+    </div>
   </div>
 
-  <!-- HOME -->
-  <div class="screen active" id="screen-home">
-    <div class="home-header">
-      <h1>For You </h1>
-      <div class="header-actions">
-        <div class="icon-btn" onclick="switchScreen('search'); document.getElementById('mainSearch').focus()">🔍</div>
-        <div class="icon-btn">🔔</div>
-      </div>
-    </div>
-    <div class="search-bar" onclick="switchScreen('search'); setTimeout(()=>document.getElementById('mainSearch').focus(),100)">
-      <span>🔍 Search all servers…</span>
-    </div>
-    <div class="feed">
-      <div class="section-label">Active Now</div>
-      <div class="stories">
-        <div class="story"><div class="story-ring"><div class="story-avatar">🎮</div><div class="story-dot"></div></div><span>blurrr</span></div>
-        <div class="story"><div class="story-ring"><div class="story-avatar">🐧</div><div class="story-dot"></div></div><span>pengiun</span></div>
-        <div class="story"><div class="story-ring seen"><div class="story-avatar">💻</div></div><span>magicnuts</span></div>
-        <div class="story"><div class="story-ring"><div class="story-avatar">🌟</div><div class="story-dot"></div></div><span>mrbeast</span></div>
-        <div class="story"><div class="story-ring seen"><div class="story-avatar">🐍</div></div><span>snakes</span></div>
-      </div>
-      <div class="section-label">Catch Up</div>
-      <div class="summary-card">
-        <div class="summary-header"><span class="ai-badge">✦ AI SUMMARY</span><span>gaming-squad · 2 hrs ago</span></div>
-        <div class="summary-title">Big debate in #builds 🔥</div>
-        <div class="summary-text"><em>blurrr</em> dropped a new PC build list, <em>pengiun</em> said the GPU is mid and overpriced. Thread has 47 replies — mostly glazing pengiun. New poll: <em>4070 vs 4080?</em></div>
-      </div>
-      <div class="feed-card">
-        <div class="card-header"><div class="server-icon" style="background:#5865f220">🎮</div><div class="card-meta"><div class="server-name">gaming-squad</div><div class="channel-name"># general-chat</div></div><div class="unread-badge">12</div></div>
-        <div class="card-preview"><strong>blurrr:</strong> bro the new season just dropped and its actually unhinged, map is cooked in the best way fr</div>
-        <div class="card-footer"><div class="avatar-stack"><div class="av">🎮</div><div class="av">🌟</div><div class="av">🐍</div></div><span class="card-time">2m ago</span></div>
-      </div>
-      <div class="feed-card" style="animation-delay:0.05s">
-        <div class="card-header"><div class="server-icon" style="background:#eb459e20">🎨</div><div class="card-meta"><div class="server-name">art-collective</div><div class="channel-name"># share-your-work</div></div><div class="unread-badge">5</div></div>
-        <div class="card-preview"><strong>pengiun:</strong> finally finished the piece no cap took forever but its giving exactly what it was supposed to give 🥺</div>
-        <div class="card-footer"><div class="avatar-stack"><div class="av">🐧</div><div class="av">🎤</div></div><span class="card-time">18m ago</span></div>
-      </div>
-      <div class="feed-card" style="animation-delay:0.1s">
-        <div class="card-header"><div class="server-icon" style="background:#57f28720">💻</div><div class="card-meta"><div class="server-name">dev-hub</div><div class="channel-name"># announcements</div></div></div>
-        <div class="card-preview"><strong>magicnuts:</strong> bot update just dropped, slash commands are 3x faster, no more waiting around, its actually goated</div>
-        <div class="card-footer"><div class="avatar-stack"><div class="av">💻</div></div><span class="card-time">1h ago</span></div>
-      </div>
+  <div class="screen" id="screen-search">
+    <h1>Search</h1>
+    <div class="si"><span>🔍</span><input id="sq" placeholder="Search messages, people…" oninput="doSearch()" autocomplete="off"></div>
+    <div class="res" id="sr"><div class="empty">Start typing to search</div></div>
+  </div>
 
-      <div class="credits-card" style="animation-delay:0.15s">
-        <div class="credits-team">TRIPLE A</div>
-        <div class="credits-label">Built at Hackathon 2026</div>
-        <div class="credits-members">
-          <div class="credit-member"><div class="credit-avatar">An</div><span class="credit-name">Anish</span></div>
-          <div class="credit-member"><div class="credit-avatar">Aa</div><span class="credit-name">Aayan</span></div>
-          <div class="credit-member"><div class="credit-avatar">Ay</div><span class="credit-name">Ayushman</span></div>
-        </div>
-      </div>
+  <div class="screen" id="screen-dm">
+    <h1>Messages</h1>
+    <div class="dml">
+      <div class="di" onclick="openChat('blurrr','🎮','online')"><div class="dav">🎮<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">blurrr</div><div class="dp">bro that was so cooked lmaoo</div></div></div>
+      <div class="di" onclick="openChat('pengiun','🐧','online')"><div class="dav">🐧<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">pengiun</div><div class="dp">nah fr that clip was absurd no cap</div></div></div>
+      <div class="di" onclick="openChat('snakes','🐍','idle')"><div class="dav">🐍<div class="dot idle"></div></div><div style="flex:1;min-width:0"><div class="dn">snakes</div><div class="dp">aight bet, pull up at 8</div></div></div>
+      <div class="di" onclick="openChat('drake','🎤','offline')"><div class="dav">🎤<div class="dot offline"></div></div><div style="flex:1;min-width:0"><div class="dn">drake</div><div class="dp">that build is actually goated tho</div></div></div>
+      <div class="di" onclick="openChat('mrbeast','🌟','online')"><div class="dav">🌟<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">mrbeast</div><div class="dp">giving away a pc to whoever wins</div></div></div>
+    </div>
+  </div>
 
+  <div class="screen" id="screen-chat">
+    <div class="chdr"><div class="back" onclick="switchScreen('dm')">‹</div><div class="chav" id="cav"></div><div><div style="font-size:15px;font-weight:700" id="cnm"></div><div style="font-size:11px;color:var(--m)" id="cst"></div></div></div>
+    <div class="msgs" id="msgs"></div>
+    <div class="cinp"><input id="ci" placeholder="Message..." onkeydown="if(event.key==='Enter')send()"><button class="snd" onclick="send()">➤</button></div>
+  </div>
+
+  <div class="nav">
+    <div class="ni active" id="nav-home" onclick="switchScreen('home')"><span class="ic">🏠</span><span class="nl">Home</span></div>
+    <div class="ni" id="nav-search" onclick="switchScreen('search')"><span class="ic">🔍</span><span class="nl">Search</span></div>
+    <div class="ni" id="nav-dm" onclick="switchScreen('dm')"><span class="ic">💬</span><span class="nl">Messages</span></div>
+  </div>
+</div>
+<script>
+const data=[
+  {av:'🎮',name:'blurrr',where:'gaming-squad · #general',txt:'new season is cooked in the best way fr',time:'2m'},
+  {av:'🐧',name:'pengiun',where:'art-collective · #work',txt:'finally finished the piece no cap its giving everything',time:'18m'},
+  {av:'💻',name:'magicnuts',where:'dev-hub · #announcements',txt:'bot update dropped slash commands are goated now',time:'1h'},
+  {av:'🎤',name:'drake',where:'dev-hub · #builds',txt:'drone build parts finally in stock we are so back',time:'Tue'},
+  {av:'🐍',name:'snakes',where:'gaming-squad · #general',txt:'anyone got specs for a 300mm drone build?',time:'Mon'},
+  {av:'🌟',name:'mrbeast',where:'gaming-squad · #general',txt:'giving away 10k pc to whoever wins the challenge',time:'Sun'},
+];
+const chats={
+  blurrr:[{me:0,t:'bro did you see that clip 💀'},{me:1,t:'LMAOO no way'},{me:0,t:'fr it was so cooked'},{me:0,t:'bro that was so cooked lmaoo'},{me:1,t:'send it rn'}],
+  pengiun:[{me:0,t:'you HAVE to see my new piece'},{me:1,t:'no way you finished it??'},{me:0,t:'YES finally lol'},{me:0,t:'nah fr that clip was absurd no cap'}],
+  snakes:[{me:1,t:'you pulling up tonight?'},{me:0,t:'maybe what time'},{me:1,t:'like 8ish'},{me:0,t:'aight bet pull up at 8'}],
+  drake:[{me:0,t:'pc finally running bro'},{me:1,t:'LETS GOOO what specs'},{me:0,t:'4080 + 7800X3D its not missing'},{me:0,t:'that build is actually goated tho'}],
+  mrbeast:[{me:0,t:'yo doing a giveaway in the server'},{me:1,t:'BRO ARE YOU SERIOUS'},{me:0,t:'dead serious $10k pc'},{me:0,t:'giving away a pc to whoever wins'}],
+};
+const rep=['no cap fr','lmaoo bro','facts tho','wait real?','bro 💀','say less','goated','nah ur cooked','sheesh','fr fr'];
+
+function switchScreen(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));
+  document.getElementById('screen-'+n).classList.add('active');
+  if(document.getElementById('nav-'+n))document.getElementById('nav-'+n).classList.add('active');
+}
+function openChat(u,av,st){
+  document.getElementById('cav').textContent=av;
+  document.getElementById('cnm').textContent=u;
+  document.getElementById('cst').textContent=st[0].toUpperCase()+st.slice(1);
+  const b=document.getElementById('msgs'),now=new Date(),t=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+  b.innerHTML=(chats[u]||[]).map(m=>`<div class="msg ${m.me?'me':'them'}"><div class="bbl">${m.t}</div><div class="mt">${t}</div></div>`).join('');
+  switchScreen('chat');setTimeout(()=>b.scrollTop=b.scrollHeight,50);
+}
+function send(){
+  const i=document.getElementById('ci'),b=document.getElementById('msgs');
+  if(!i.value.trim())return;
+  const now=new Date(),t=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+  b.innerHTML+=`<div class="msg me"><div class="bbl">${i.value}</div><div class="mt">${t}</div></div>`;
+  i.value='';b.scrollTop=b.scrollHeight;
+  setTimeout(()=>{b.innerHTML+=`<div class="msg them"><div class="bbl">${rep[Math.floor(Math.random()*rep.length)]}</div><div class="mt">${t}</div></div>`;b.scrollTop=b.scrollHeight;},1000);
+}
+function doSearch(){
+  const q=document.getElementById('sq').value.trim(),b=document.getElementById('sr');
+  if(!q){b.innerHTML='<div class="empty">Start typing to search</div>';return;}
+  const r=data.filter(d=>d.name.toLowerCase().includes(q.toLowerCase())||d.txt.toLowerCase().includes(q.toLowerCase()));
+  if(!r.length){b.innerHTML=`<div class="empty">No results for "${q}"</div>`;return;}
+  const e=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  b.innerHTML=r.map(d=>`<div class="ri"><div class="rav">${d.av}</div><div style="flex:1;min-width:0"><div class="rn">${d.name} <span class="rw">· ${d.where}</span></div><div class="rt">${d.txt.replace(new RegExp(e,'gi'),m=>`<mark>${m}</mark>`)}</div></div><span style="font-size:11px;color:var(--m);flex-shrink:0">${d.time}</span></div>`).join('');
+}
+const tick=()=>{const n=new Date();document.getElementById('clk').textContent=n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes();};
+tick();setInterval(tick,10000);
+</script>
+</body>
+</html>
