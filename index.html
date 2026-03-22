@@ -92,7 +92,7 @@ h1{font-family:'Syne',sans-serif;font-size:24px;padding:14px 20px 10px;flex-shri
 </head>
 <body>
 <div class="phone">
-  <div class="bar"><span id="clk">9:41</span><span>📶🔋</span></div>
+  <div class="bar"><span id="clk">6:07</span><span>📶🔋</span></div>
 
   <div class="screen active" id="screen-home">
     <h1>For You </h1>
@@ -163,17 +163,16 @@ function openChat(u,av,st){
   document.getElementById('cav').textContent=av;
   document.getElementById('cnm').textContent=u;
   document.getElementById('cst').textContent=st[0].toUpperCase()+st.slice(1);
-  const b=document.getElementById('msgs'),now=new Date(),t=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
-  b.innerHTML=(chats[u]||[]).map(m=>`<div class="msg ${m.me?'me':'them'}"><div class="bbl">${m.t}</div><div class="mt">${t}</div></div>`).join('');
+  const b=document.getElementById('msgs');
+  b.innerHTML=(chats[u]||[]).map(m=>`<div class="msg ${m.me?'me':'them'}"><div class="bbl">${m.t}</div><div class="mt">6:07</div></div>`).join('');
   switchScreen('chat');setTimeout(()=>b.scrollTop=b.scrollHeight,50);
 }
 function send(){
   const i=document.getElementById('ci'),b=document.getElementById('msgs');
   if(!i.value.trim())return;
-  const now=new Date(),t=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
-  b.innerHTML+=`<div class="msg me"><div class="bbl">${i.value}</div><div class="mt">${t}</div></div>`;
+  b.innerHTML+=`<div class="msg me"><div class="bbl">${i.value}</div><div class="mt">6:07</div></div>`;
   i.value='';b.scrollTop=b.scrollHeight;
-  setTimeout(()=>{b.innerHTML+=`<div class="msg them"><div class="bbl">${rep[Math.floor(Math.random()*rep.length)]}</div><div class="mt">${t}</div></div>`;b.scrollTop=b.scrollHeight;},1000);
+  setTimeout(()=>{b.innerHTML+=`<div class="msg them"><div class="bbl">${rep[Math.floor(Math.random()*rep.length)]}</div><div class="mt">6:07</div></div>`;b.scrollTop=b.scrollHeight;},1000);
 }
 function doSearch(){
   const q=document.getElementById('sq').value.trim(),b=document.getElementById('sr');
@@ -183,8 +182,6 @@ function doSearch(){
   const e=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   b.innerHTML=r.map(d=>`<div class="ri"><div class="rav">${d.av}</div><div style="flex:1;min-width:0"><div class="rn">${d.name} <span class="rw">· ${d.where}</span></div><div class="rt">${d.txt.replace(new RegExp(e,'gi'),m=>`<mark>${m}</mark>`)}</div></div><span style="font-size:11px;color:var(--m);flex-shrink:0">${d.time}</span></div>`).join('');
 }
-const tick=()=>{const n=new Date();document.getElementById('clk').textContent=n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes();};
-tick();setInterval(tick,10000);
 function openServer(name,av,channels){
   document.getElementById('sav').textContent=av;
   document.getElementById('snm').textContent=name;
