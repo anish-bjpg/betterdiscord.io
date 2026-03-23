@@ -15,7 +15,7 @@ body{background:#050505;display:flex;justify-content:center;align-items:center;m
 h1{font-family:'Comic Sans MS','Comic Sans',cursive;font-size:24px;padding:14px 20px 10px;flex-shrink:0;font-weight:800;}
 .nav{height:72px;background:var(--s);border-top:1px solid var(--b);display:flex;align-items:center;justify-content:space-around;padding:0 10px 8px;flex-shrink:0;}
 .ni{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:6px 16px;border-radius:12px;}
-.ni.active .nl{color:var(--r);} 
+.ni.active .nl{color:var(--r);}
 .ni.active .ic{color:var(--r);}
 .ni .ic{font-size:13px;color:var(--m);}
 .nl{font-size:10px;color:var(--m);}
@@ -97,10 +97,10 @@ h1{font-family:'Comic Sans MS','Comic Sans',cursive;font-size:24px;padding:14px 
     <h1>For You</h1>
     <div class="feed">
       <div class="card" style="background:linear-gradient(135deg,rgba(220,30,30,0.15),rgba(255,60,60,0.05));border-color:rgba(220,30,30,0.3)"><div class="row"><span style="font-size:10px;font-weight:700;background:linear-gradient(90deg,#e02020,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px">AI SUMMARY</span><span style="font-size:11px;color:var(--m);margin-left:4px">gaming-squad · 2h ago</span></div><div style="font-size:14px;font-weight:800;margin-bottom:6px">Big debate in #builds</div><div class="txt"><b>blurrr</b> dropped a new PC build list, <b>pengiun</b> said the GPU is mid and overpriced. 47 replies — mostly glazing pengiun. Active poll: <b>4070 vs 4080?</b></div></div>
-      <div class="card"><div class="row"><div class="ico">GEN</div><span class="ch">#general-chat</span><span class="badge">12</span></div><div class="txt"><b>blurrr:</b> bro the new season just dropped and its actually unhinged, map is cooked in the best way fr</div></div>
-      <div class="card"><div class="row"><div class="ico">ART</div><span class="ch">#share-your-work</span><span class="badge">5</span></div><div class="txt"><b>pengiun:</b> finally finished the piece no cap took forever but its giving exactly what it was supposed to give</div></div>
-      <div class="card"><div class="row"><div class="ico">DEV</div><span class="ch">#announcements</span></div><div class="txt"><b>magicnuts:</b> bot update just dropped, slash commands are 3x faster, its actually goated</div></div>
-      <div class="card"><div class="row"><div class="ico">BLD</div><span class="ch">#builds</span></div><div class="txt"><b>drake:</b> parts list for the drone build just came in, motors finally in stock, we are so back</div></div>
+      <div class="card"><div class="row"><div class="ico">GEN</div><span class="ch">#general-chat</span><span class="badge">12</span></div><div class="txt"><b>blurrr:</b> the new season is hella ass, the map sucks</div></div>
+      <div class="card"><div class="row"><div class="ico">ART</div><span class="ch">#share-your-work</span><span class="badge">5</span></div><div class="txt"><b>pengiun:</b> finally finished it ts took forever</div></div>
+      <div class="card"><div class="row"><div class="ico">DEV</div><span class="ch">#announcements</span></div><div class="txt"><b>magicnuts:</b> admin abuse is finally backk</div></div>
+      <div class="card"><div class="row"><div class="ico">BLD</div><span class="ch">#builds</span></div><div class="txt"><b>drake:</b> parts r finally restocked lfg</div></div>
     </div>
   </div>
 
@@ -136,11 +136,11 @@ h1{font-family:'Comic Sans MS','Comic Sans',cursive;font-size:24px;padding:14px 
   <div class="screen" id="screen-dm">
     <h1>Messages</h1>
     <div class="dml">
-      <div class="di" onclick="openChat('blurrr','BL','online')"><div class="dav">BL<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">blurrr</div><div class="dp">bro that was so cooked lmaoo</div></div></div>
-      <div class="di" onclick="openChat('pengiun','PE','online')"><div class="dav">PE<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">pengiun</div><div class="dp">nah fr that clip was absurd no cap</div></div></div>
+      <div class="di" onclick="openChat('blurrr','BL','online')"><div class="dav">BL<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">blurrr</div><div class="dp">bro its hella fried</div></div></div>
+      <div class="di" onclick="openChat('pengiun','PE','online')"><div class="dav">PE<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">pengiun</div><div class="dp">that clip was hella tuff</div></div></div>
       <div class="di" onclick="openChat('snakes','SN','idle')"><div class="dav">SN<div class="dot idle"></div></div><div style="flex:1;min-width:0"><div class="dn">snakes</div><div class="dp">aight bet, pull up at 8</div></div></div>
-      <div class="di" onclick="openChat('drake','DR','offline')"><div class="dav">DR<div class="dot offline"></div></div><div style="flex:1;min-width:0"><div class="dn">drake</div><div class="dp">that build is actually goated tho</div></div></div>
-      <div class="di" onclick="openChat('mrbeast','MB','online')"><div class="dav">MB<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">mrbeast</div><div class="dp">giving away a pc to whoever wins</div></div></div>
+      <div class="di" onclick="openChat('drake','DR','offline')"><div class="dav">DR<div class="dot offline"></div></div><div style="flex:1;min-width:0"><div class="dn">drake</div><div class="dp">that build was hella tuff</div></div></div>
+      <div class="di" onclick="openChat('mrbeast','MB','online')"><div class="dav">MB<div class="dot online"></div></div><div style="flex:1;min-width:0"><div class="dn">mrbeast</div><div class="dp">giving away an island to whoever wins</div></div></div>
     </div>
   </div>
 
@@ -173,11 +173,11 @@ const searchData=[
   {av:'MB',name:'mrbeast',where:'gaming-squad · #general',txt:'giving away an island to whoever wins the challenge',time:'Sun'},
 ];
 const chats={
-  blurrr:[{me:0,t:'bro did you see that clip'},{me:1,t:'LMAOO no way'},{me:0,t:'fr it was so cooked'},{me:0,t:'bro that was so cooked lmaoo'},{me:1,t:'send it rn'}],
-  pengiun:[{me:0,t:'you HAVE to see my new piece'},{me:1,t:'no way you finished it??'},{me:0,t:'YES finally lol'},{me:0,t:'nah that clip was ass bruh'}],
+  blurrr:[{me:0,t:'bro did you see that clip'},{me:1,t:'LMAOO no way'},{me:0,t:'fr it was so cooked'},{me:0,t:'bro its hella fried'},{me:1,t:'send it rn'}],
+  pengiun:[{me:0,t:'you HAVE to see my new piece'},{me:1,t:'no way you finished it??'},{me:0,t:'YES finally lol'},{me:0,t:'that clip was hella tuff'}],
   snakes:[{me:1,t:'you pulling up tonight?'},{me:0,t:'maybe what time'},{me:1,t:'like 8ish'},{me:0,t:'aight bet pull up at 8'}],
-  drake:[{me:0,t:'pc finally running'},{me:1,t:' what specs'},{me:0,t:'4080 + 7800X3D'},{me:0,t:'that build is hella tuff '}],
-  mrbeast:[{me:0,t:'yo doing a giveaway'},{me:1,t:'BRO ARE YOU SERIOUS'},{me:0,t:'deadass half a million dollar island'},{me:0,t:'giving away an island to whoever wins'}],
+  drake:[{me:0,t:'pc finally running'},{me:1,t:'what specs'},{me:0,t:'4080 + 7800X3D'},{me:0,t:'that build was hella tuff'}],
+  mrbeast:[{me:0,t:'yo doing a giveaway'},{me:1,t:'BRO ARE YOU SERIOUS'},{me:0,t:'island'},{me:0,t:'giving away an island to whoever wins'}],
 };
 const rep=['no cap fr','lmaoo bro','facts tho','wait real?','bro','say less','goated','nah ur cooked','sheesh','fr fr'];
 
